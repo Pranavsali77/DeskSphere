@@ -1,0 +1,4 @@
+spring.application.name=backend
+
+jwt.secret=YourVeryStrongSecretKeyForDeskSphereProject2026SuperSecureKey12345
+jwt.expiration=86400000

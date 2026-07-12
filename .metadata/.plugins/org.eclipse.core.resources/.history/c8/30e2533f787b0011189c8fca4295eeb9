@@ -1,0 +1,9 @@
+package com.ithelpdesk.backend.service;
+
+public class FeedbackService {
+	FeedbackResponse submitFeedback(FeedbackRequest request);
+
+	List<FeedbackResponse> getAllFeedback();
+
+	List<FeedbackResponse> getEngineerFeedback(Long engineerId);
+}

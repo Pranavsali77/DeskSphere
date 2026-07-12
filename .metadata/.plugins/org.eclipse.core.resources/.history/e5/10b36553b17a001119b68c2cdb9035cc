@@ -1,0 +1,105 @@
+package com.ithelpdesk.backend.service;
+
+import com.ithelpdesk.backend.config.JwtUtil;
+import com.ithelpdesk.backend.dto.ChangePasswordRequest;
+import com.ithelpdesk.backend.dto.ForgotPasswordRequest;
+import com.ithelpdesk.backend.dto.LoginRequest;
+import com.ithelpdesk.backend.dto.LoginResponse;
+import com.ithelpdesk.backend.dto.RegisterRequest;
+import com.ithelpdesk.backend.entity.Department;
+import com.ithelpdesk.backend.entity.Role;
+import com.ithelpdesk.backend.entity.User;
+import com.ithelpdesk.backend.enums.RoleType;
+import com.ithelpdesk.backend.repository.DepartmentRepository;
+import com.ithelpdesk.backend.repository.RoleRepository;
+import com.ithelpdesk.backend.repository.UserRepository;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthServiceImpl implements AuthService {
+
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final DepartmentRepository departmentRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    public AuthServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           DepartmentRepository departmentRepository,
+                           PasswordEncoder passwordEncoder,
+                           AuthenticationManager authenticationManager,
+                           JwtUtil jwtUtil) {
+
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.departmentRepository = departmentRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
+
+    @Override
+    public String register(RegisterRequest request) {
+
+        // Check Email
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already exists.");
+        }
+
+        // Check Phone
+        if (userRepository.existsByPhone(request.getPhone())) {
+            throw new RuntimeException("Phone number already exists.");
+        }
+
+        // Find Role
+        Role role = roleRepository.findByRoleName(
+                RoleType.valueOf(request.getRole().toUpperCase()))
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+
+        // Find Department
+        Department department = departmentRepository
+                .findByDepartmentName(request.getDepartment())
+                .orElseThrow(() -> new RuntimeException("Department not found"));
+
+        // Create User
+        User user = new User();
+
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPhone(request.getPhone());
+        user.setRole(role);
+        user.setDepartment(department);
+        user.setActive(true);
+
+        // Save User
+        userRepository.save(user);
+
+        return "User Registered Successfully";
+    }
+
+    @Override
+    public LoginResponse login(LoginRequest request) {
+
+        // Will implement next
+        return new LoginResponse();
+    }
+
+    @Override
+    public String forgotPassword(ForgotPasswordRequest request) {
+
+        return "Password Reset Link Sent";
+    }
+
+    @Override
+    public String changePassword(ChangePasswordRequest request, String email) {
+
+        return "Password Changed Successfully";
+    }
+}

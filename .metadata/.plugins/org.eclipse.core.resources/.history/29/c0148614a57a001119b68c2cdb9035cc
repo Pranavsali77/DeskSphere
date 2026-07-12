@@ -1,0 +1,57 @@
+package com.ithelpdesk.backend.service;
+import com.ithelpdesk.backend.config.JwtUtil;
+import com.ithelpdesk.backend.dto.*;
+import com.ithelpdesk.repository.DepartmentRepository;
+import com.ithelpdesk.repository.RoleRepository;
+import com.ithelpdesk.repository.UserRepository;
+import com.ithelpdesk.service.AuthService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class AuthServiceImpl implements AuthService {
+
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final DepartmentRepository departmentRepository;
+
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    @Override
+    public String register(RegisterRequest request) {
+
+        // Registration logic
+
+        return "User Registered Successfully";
+    }
+
+    @Override
+    public LoginResponse login(LoginRequest request) {
+
+        // Login logic
+
+        return new LoginResponse();
+    }
+
+    @Override
+    public String forgotPassword(ForgotPasswordRequest request) {
+
+        // Forgot password logic
+
+        return "Password Reset Link Sent";
+    }
+
+    @Override
+    public String changePassword(ChangePasswordRequest request,
+                                 String email) {
+
+        // Change password logic
+
+        return "Password Changed Successfully";
+    }
+}

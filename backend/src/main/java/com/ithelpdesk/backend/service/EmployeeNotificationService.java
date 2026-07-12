@@ -1,0 +1,15 @@
+package com.ithelpdesk.backend.service;
+
+import java.util.List;
+
+import com.ithelpdesk.backend.dto.NotificationResponse;
+
+public interface EmployeeNotificationService {
+
+    List<NotificationResponse> getNotifications(String employeeEmail);
+
+    String markAsRead(Long notificationId, String employeeEmail);
+
+    String deleteNotification(Long notificationId, String employeeEmail);
+
+}

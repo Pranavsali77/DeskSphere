@@ -1,0 +1,122 @@
+package com.ithelpdesk.backend.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.ithelpdesk.backend.dto.FeedbackRequest;
+import com.ithelpdesk.backend.dto.FeedbackResponse;
+import com.ithelpdesk.backend.entity.Feedback;
+import com.ithelpdesk.backend.entity.Ticket;
+import com.ithelpdesk.backend.repository.FeedbackRepository;
+import com.ithelpdesk.backend.repository.TicketRepository;
+
+@Service
+public class EmployeeFeedbackServiceImpl implements EmployeeFeedbackService {
+
+	private final FeedbackRepository feedbackRepository;
+	private final TicketRepository ticketRepository;
+
+	public EmployeeFeedbackServiceImpl(
+	        FeedbackRepository feedbackRepository,
+	        TicketRepository ticketRepository) {
+
+	    this.feedbackRepository = feedbackRepository;
+	    this.ticketRepository = ticketRepository;
+	}
+	@Override
+	public FeedbackResponse submitFeedback(FeedbackRequest request) {
+
+	    Ticket ticket = ticketRepository.findById(request.getTicketId())
+	            .orElseThrow(() -> new RuntimeException("Ticket not found"));
+
+	    Feedback feedback = new Feedback();
+	    feedback.setTicket(ticket);
+	    feedback.setEmployee(ticket.getEmployee());
+	    feedback.setEngineer(ticket.getEngineer());
+	    feedback.setRating(request.getRating());
+	    feedback.setComment(request.getComment());
+	    feedback.setCreatedAt(LocalDateTime.now());
+
+	    feedback = feedbackRepository.save(feedback);
+
+	    FeedbackResponse response = new FeedbackResponse();
+	    response.setId(feedback.getId());
+	    response.setTicketId(ticket.getId());
+	    response.setRating(feedback.getRating());
+	    response.setComment(feedback.getComment());
+	    response.setEmployeeName(ticket.getEmployee().getFirstName());
+	    response.setEngineerName(
+	            ticket.getEngineer() != null ? ticket.getEngineer().getFirstName() : null);
+	    response.setCreatedAt(feedback.getCreatedAt());
+
+	    return response;
+	}
+
+	@Override
+	public List<FeedbackResponse> getAllFeedback() {
+
+	    return feedbackRepository.findAll()
+	            .stream()
+	            .map(feedback -> {
+
+	                FeedbackResponse response = new FeedbackResponse();
+
+	                response.setId(feedback.getId());
+
+	                if (feedback.getTicket() != null) {
+	                    response.setTicketId(feedback.getTicket().getId());
+	                }
+
+	                response.setRating(feedback.getRating());
+	                response.setComment(feedback.getComment());
+
+	                if (feedback.getEmployee() != null) {
+	                    response.setEmployeeName(feedback.getEmployee().getFirstName());
+	                }
+
+	                if (feedback.getEngineer() != null) {
+	                    response.setEngineerName(feedback.getEngineer().getFirstName());
+	                }
+
+	                response.setCreatedAt(feedback.getCreatedAt());
+
+	                return response;
+	            })
+	            .toList();
+	}
+
+	@Override
+	public List<FeedbackResponse> getEngineerFeedback(Long engineerId) {
+
+	    return feedbackRepository.findByEngineerId(engineerId)
+	            .stream()
+	            .map(feedback -> {
+
+	                FeedbackResponse response = new FeedbackResponse();
+
+	                response.setId(feedback.getId());
+
+	                if (feedback.getTicket() != null) {
+	                    response.setTicketId(feedback.getTicket().getId());
+	                }
+
+	                response.setRating(feedback.getRating());
+	                response.setComment(feedback.getComment());
+
+	                if (feedback.getEmployee() != null) {
+	                    response.setEmployeeName(feedback.getEmployee().getName());
+	                }
+
+	                if (feedback.getEngineer() != null) {
+	                    response.setEngineerName(feedback.getEngineer().getName());
+	                }
+
+	                response.setCreatedAt(feedback.getCreatedAt());
+
+	                return response;
+	            })
+	            .toList();
+	}
+}

@@ -1,0 +1,10 @@
+package com.ithelpdesk.backend.service;
+
+import com.ithelpdesk.backend.dto.AIChatRequest;
+import com.ithelpdesk.backend.dto.AIChatResponse;
+
+public interface AIChatService {
+
+    AIChatResponse chat(AIChatRequest request);
+
+}

@@ -1,0 +1,33 @@
+package com.ithelpdesk.backend.controller;
+
+import com.ithelpdesk.backend.dto.CreateTicketRequest;
+import com.ithelpdesk.backend.dto.TicketResponse;
+import com.ithelpdesk.backend.dto.UpdateTicketRequest;
+import com.ithelpdesk.backend.service.EmployeeTicketService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/employee")
+@CrossOrigin(origins = "*")
+public class EmployeeTicketController {
+
+    private final EmployeeTicketService employeeTicketService;
+
+    public EmployeeTicketController(EmployeeTicketService employeeTicketService) {
+        this.employeeTicketService = employeeTicketService;
+    }
+    @PostMapping("/tickets")
+    public ResponseEntity<TicketResponse> createTicket(
+            @Valid @RequestBody CreateTicketRequest request,
+            @RequestParam String email) {
+
+        return ResponseEntity.ok(
+                employeeTicketService.createTicket(request, email)
+        );
+    }
+
+}

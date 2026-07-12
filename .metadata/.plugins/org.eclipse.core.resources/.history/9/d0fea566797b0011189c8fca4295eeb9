@@ -1,0 +1,35 @@
+package com.ithelpdesk.backend.controller;
+
+import com.ithelpdesk.backend.dto.FeedbackRequest;
+import com.ithelpdesk.backend.dto.FeedbackResponse;
+import com.ithelpdesk.backend.service.FeedbackService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/feedback")
+public class EmployeeFeedbackController {
+
+    private final FeedbackService feedbackService;
+
+    public EmployeeFeedbackController(FeedbackService feedbackService) {
+        this.feedbackService = feedbackService;
+    }
+
+    @PostMapping
+    public ResponseEntity<FeedbackResponse> submitFeedback(@RequestBody FeedbackRequest request) {
+        return ResponseEntity.ok(feedbackService.submitFeedback(request));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FeedbackResponse>> getAllFeedback() {
+        return ResponseEntity.ok(feedbackService.getAllFeedback());
+    }
+
+    @GetMapping("/engineer/{engineerId}")
+    public ResponseEntity<List<FeedbackResponse>> getEngineerFeedback(@PathVariable Long engineerId) {
+        return ResponseEntity.ok(feedbackService.getEngineerFeedback(engineerId));
+    }
+}

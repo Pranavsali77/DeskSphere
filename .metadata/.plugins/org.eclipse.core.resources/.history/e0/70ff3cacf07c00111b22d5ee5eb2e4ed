@@ -1,0 +1,43 @@
+package com.ithelpdesk.backend.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.ithelpdesk.backend.dto.AIChatRequest;
+import com.ithelpdesk.backend.dto.AIChatResponse;
+
+@Service
+public class AIChatServiceImpl implements AIChatService {
+
+    private final RestTemplate restTemplate;
+
+    public AIChatServiceImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    private static final String PYTHON_API =
+            "http://localhost:8000/chat";
+    
+    private static final String INTENT_API =
+            "http://localhost:8000/intent";
+
+    @Override
+    public AIChatResponse chat(AIChatRequest request) {
+
+        return restTemplate.postForObject(
+                PYTHON_API,
+                request,
+                AIChatResponse.class
+        );
+    }
+    
+    @Override
+    public AIIntentResponse detectIntent(AIIntentRequest request) {
+
+        return restTemplate.postForObject(
+                INTENT_API,
+                request,
+                AIIntentResponse.class
+        );
+    }
+}

@@ -1,0 +1,81 @@
+package com.ithelpdesk.backend.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.ithelpdesk.backend.dto.DashboardResponse;
+import com.ithelpdesk.backend.dto.TicketResponse;
+import com.ithelpdesk.backend.enums.TicketStatus;
+import com.ithelpdesk.backend.repository.TicketRepository;
+import com.ithelpdesk.backend.repository.UserRepository;
+import com.ithelpdesk.backend.entity.User;
+
+@Service
+public class EmployeeDashboardServiceImpl implements EmployeeDashboardService {
+
+    private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
+
+    // ==========================
+    // Constructor
+    // ==========================
+
+    public EmployeeDashboardServiceImpl(
+            TicketRepository ticketRepository,
+            UserRepository userRepository) {
+
+        this.ticketRepository = ticketRepository;
+        this.userRepository = userRepository;
+    }
+
+    // ==========================
+    // Paste mapToResponse() HERE
+    // ==========================
+
+    private TicketResponse mapToResponse(Ticket ticket) {
+
+        TicketResponse response = new TicketResponse();
+
+        response.setId(ticket.getId());
+        response.setTicketNumber(ticket.getTicketNumber());
+        response.setTitle(ticket.getTitle());
+        response.setDescription(ticket.getDescription());
+
+        response.setEmployeeName(
+                ticket.getEmployee().getFirstName() + " "
+                + ticket.getEmployee().getLastName());
+
+        if (ticket.getEngineer() != null) {
+            response.setEngineerName(
+                    ticket.getEngineer().getFirstName() + " "
+                    + ticket.getEngineer().getLastName());
+        }
+
+        response.setDepartment(ticket.getDepartment().getDepartmentName());
+
+        response.setCategory(ticket.getCategory().name());
+        response.setPriority(ticket.getPriority().name());
+        response.setStatus(ticket.getStatus().name());
+
+        response.setResolution(ticket.getResolution());
+
+        response.setCreatedAt(ticket.getCreatedAt());
+        response.setUpdatedAt(ticket.getUpdatedAt());
+        response.setResolvedAt(ticket.getResolvedAt());
+
+        return response;
+    }
+
+    // ==========================
+    // getDashboard()
+    // ==========================
+
+    @Override
+    public DashboardResponse getDashboard(String employeeEmail) {
+
+        // Your existing dashboard code
+
+        return response;
+    }
+}

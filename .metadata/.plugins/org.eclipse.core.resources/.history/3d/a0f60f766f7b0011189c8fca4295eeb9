@@ -1,0 +1,30 @@
+package com.ithelpdesk.backend.dto;
+
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class DashboardResponse {
+
+    private String employeeName;
+
+    private Long totalTickets;
+
+    private Long openTickets;
+
+    private Long inProgressTickets;
+
+    private Long resolvedTickets;
+
+    private Long closedTickets;
+
+    private List<TicketResponse> recentTickets;
+
+}

@@ -1,0 +1,129 @@
+package com.ithelpdesk.backend.service;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ithelpdesk.backend.dto.CreateTicketRequest;
+import com.ithelpdesk.backend.dto.TicketResponse;
+import com.ithelpdesk.backend.dto.UpdateTicketRequest;
+import com.ithelpdesk.backend.entity.Department;
+import com.ithelpdesk.backend.entity.Ticket;
+import com.ithelpdesk.backend.entity.User;
+import com.ithelpdesk.backend.enums.TicketStatus;
+import com.ithelpdesk.backend.repository.DepartmentRepository;
+import com.ithelpdesk.backend.repository.TicketRepository;
+import com.ithelpdesk.backend.repository.UserRepository;
+
+@Service
+@Transactional
+public class EmployeeTicketServiceImpl implements EmployeeTicketService {
+
+    private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
+    private final DepartmentRepository departmentRepository;
+
+    public EmployeeTicketServiceImpl(
+            TicketRepository ticketRepository,
+            UserRepository userRepository,
+            DepartmentRepository departmentRepository) {
+
+        this.ticketRepository = ticketRepository;
+        this.userRepository = userRepository;
+        this.departmentRepository = departmentRepository;
+    }
+    private String generateTicketNumber() {
+
+        return "TKT-" + UUID.randomUUID()
+                .toString()
+                .substring(0,8)
+                .toUpperCase();
+    }
+    private TicketResponse mapToResponse(Ticket ticket){
+
+        TicketResponse response = new TicketResponse();
+
+        response.setId(ticket.getId());
+        response.setTicketNumber(ticket.getTicketNumber());
+        response.setTitle(ticket.getTitle());
+        response.setDescription(ticket.getDescription());
+
+        response.setEmployeeName(
+                ticket.getEmployee().getFirstName() + " "
+                + ticket.getEmployee().getLastName());
+
+        if(ticket.getEngineer()!=null){
+
+            response.setEngineerName(
+                    ticket.getEngineer().getFirstName() + " "
+                    + ticket.getEngineer().getLastName());
+        }
+
+        response.setDepartment(
+                ticket.getDepartment().getDepartmentName());
+
+        response.setCategory(
+                ticket.getCategory().name());
+
+        response.setPriority(
+                ticket.getPriority().name());
+
+        response.setStatus(
+                ticket.getStatus().name());
+
+        response.setResolution(
+                ticket.getResolution());
+
+        response.setCreatedAt(ticket.getCreatedAt());
+        response.setUpdatedAt(ticket.getUpdatedAt());
+        response.setResolvedAt(ticket.getResolvedAt());
+
+        return response;
+    }
+    @Override
+    public TicketResponse createTicket(CreateTicketRequest request,
+                                       String employeeEmail) {
+
+        // Find logged-in employee
+        User employee = userRepository.findByEmail(employeeEmail)
+                .orElseThrow(() ->
+                        new RuntimeException("Employee not found with email: " + employeeEmail));
+
+        // Find department
+        Department department = departmentRepository.findById(request.getDepartmentId())
+                .orElseThrow(() ->
+                        new RuntimeException("Department not found"));
+
+        // Create new ticket
+        Ticket ticket = new Ticket();
+
+        ticket.setTicketNumber(generateTicketNumber());
+        ticket.setTitle(request.getTitle());
+        ticket.setDescription(request.getDescription());
+
+        ticket.setEmployee(employee);
+        ticket.setDepartment(department);
+
+        ticket.setCategory(request.getCategory());
+        ticket.setPriority(request.getPriority());
+
+        // Initial status
+        ticket.setStatus(TicketStatus.OPEN);
+
+        // Engineer will be assigned later by Manager
+        ticket.setEngineer(null);
+
+        // No resolution initially
+        ticket.setResolution(null);
+
+        // Save ticket
+        Ticket savedTicket = ticketRepository.save(ticket);
+
+        // Convert Entity to DTO
+        return mapToResponse(savedTicket);
+    }
+
+}

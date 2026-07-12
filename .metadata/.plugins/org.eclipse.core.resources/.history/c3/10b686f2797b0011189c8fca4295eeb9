@@ -1,0 +1,14 @@
+package com.ithelpdesk.backend.repository;
+
+import com.ithelpdesk.backend.model.EmployeeFeedback;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
+
+    List<Feedback> findByEngineerId(Long engineerId);
+
+}

@@ -1,0 +1,80 @@
+package com.ithelpdesk.backend.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.ithelpdesk.backend.dto.DashboardResponse;
+import com.ithelpdesk.backend.dto.TicketResponse;
+import com.ithelpdesk.backend.enums.TicketStatus;
+import com.ithelpdesk.backend.repository.TicketRepository;
+import com.ithelpdesk.backend.repository.UserRepository;
+import com.ithelpdesk.backend.entity.User;
+
+@Service
+public class EmployeeDashboardServiceImpl implements EmployeeDashboardService {
+
+    private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
+
+    public EmployeeDashboardServiceImpl(
+            TicketRepository ticketRepository,
+            UserRepository userRepository) {
+
+        this.ticketRepository = ticketRepository;
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public DashboardResponse getDashboard(String employeeEmail) {
+
+        // Find Employee
+        User employee = userRepository.findByEmail(employeeEmail)
+                .orElseThrow(() ->
+                        new RuntimeException("Employee not found"));
+
+        // Count Tickets
+        long totalTickets =
+                ticketRepository.countByEmployee(employee);
+
+        long openTickets =
+                ticketRepository.countByEmployeeAndStatus(
+                        employee, TicketStatus.OPEN);
+
+        long inProgressTickets =
+                ticketRepository.countByEmployeeAndStatus(
+                        employee, TicketStatus.IN_PROGRESS);
+
+        long resolvedTickets =
+                ticketRepository.countByEmployeeAndStatus(
+                        employee, TicketStatus.RESOLVED);
+
+        long closedTickets =
+                ticketRepository.countByEmployeeAndStatus(
+                        employee, TicketStatus.CLOSED);
+
+        // Recent Tickets
+        List<TicketResponse> recentTickets =
+                ticketRepository
+                        .findTop5ByEmployeeOrderByCreatedAtDesc(employee)
+                        .stream()
+                        .map(this::mapToResponse)
+                        .toList();
+
+        // Prepare Dashboard
+        DashboardResponse response = new DashboardResponse();
+
+        response.setEmployeeName(
+                employee.getFirstName() + " " + employee.getLastName());
+
+        response.setTotalTickets(totalTickets);
+        response.setOpenTickets(openTickets);
+        response.setInProgressTickets(inProgressTickets);
+        response.setResolvedTickets(resolvedTickets);
+        response.setClosedTickets(closedTickets);
+        response.setRecentTickets(recentTickets);
+
+        return response;
+    }
+
+}

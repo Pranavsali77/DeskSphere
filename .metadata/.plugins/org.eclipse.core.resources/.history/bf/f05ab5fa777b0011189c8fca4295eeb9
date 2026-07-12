@@ -1,0 +1,12 @@
+package com.ithelpdesk.backend.dto;
+public class FeedbackResponse {
+
+    private Long id;
+    private Long ticketId;
+    private int rating;
+    private String comment;
+    private String employeeName;
+    private String engineerName;
+    private LocalDateTime createdAt;
+
+}
