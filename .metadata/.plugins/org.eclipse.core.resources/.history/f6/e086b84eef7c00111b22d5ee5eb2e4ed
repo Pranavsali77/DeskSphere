@@ -1,0 +1,19 @@
+package com.ithelpdesk.backend.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.ithelpdesk.backend.entity.KnowledgeBase;
+
+public interface KnowledgeBaseRepository
+        extends JpaRepository<KnowledgeBase, Long> {
+
+    List<KnowledgeBase> findByActiveTrue();
+
+    List<KnowledgeBase> findByCategoryIgnoreCase(String category);
+
+    List<KnowledgeBase> findByKeywordsContainingIgnoreCase(String keyword);
+
+    List<KnowledgeBase> findByQuestionContainingIgnoreCase(String question);
+}

@@ -1,0 +1,27 @@
+package com.ithelpdesk.backend.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.ithelpdesk.backend.dto.FeedbackRequest;
+import com.ithelpdesk.backend.dto.FeedbackResponse;
+
+@Service
+public class EmployeeFeedbackServiceImpl implements FeedbackService {
+
+    @Override
+    public FeedbackResponse submitFeedback(FeedbackRequest request) {
+        return null;
+    }
+
+    @Override
+    public List<FeedbackResponse> getAllFeedback() {
+        return null;
+    }
+
+    @Override
+    public List<FeedbackResponse> getEngineerFeedback(Long engineerId) {
+        return null;
+    }
+}

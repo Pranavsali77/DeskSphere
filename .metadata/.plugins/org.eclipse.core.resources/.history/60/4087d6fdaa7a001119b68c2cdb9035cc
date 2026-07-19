@@ -1,0 +1,15 @@
+spring.application.name=backend
+spring.datasource.url=jdbc:postgresql://db.tcuxlcyjapaajrqndrbs.supabase.co:5432/postgres
+spring.datasource.username=postgres
+spring.datasource.password=Desksphere@125
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+
+
+jwt.secret=jwt.secret=1234567890123456789012345678901234567890123456789012345678901234
+jwt.expiration=86400000

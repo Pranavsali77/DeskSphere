@@ -1,0 +1,15 @@
+package com.ithelpdesk.backend.service;
+
+import java.util.List;
+
+import com.ithelpdesk.backend.dto.FeedbackRequest;
+import com.ithelpdesk.backend.dto.FeedbackResponse;
+
+public interface FeedbackService {
+
+    FeedbackResponse submitFeedback(FeedbackRequest request);
+
+    List<FeedbackResponse> getAllFeedback();
+
+    List<FeedbackResponse> getEngineerFeedback(Long engineerId);
+}

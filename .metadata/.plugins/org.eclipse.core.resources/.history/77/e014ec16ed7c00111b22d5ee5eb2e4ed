@@ -1,0 +1,5 @@
+package com.ithelpdesk.backend.config;
+
+public class AIConfig {
+
+}

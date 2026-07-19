@@ -1,0 +1,68 @@
+package com.ithelpdesk.backend.service;
+
+import com.ithelpdesk.backend.config.JwtUtil;
+import com.ithelpdesk.backend.dto.ChangePasswordRequest;
+import com.ithelpdesk.backend.dto.ForgotPasswordRequest;
+import com.ithelpdesk.backend.dto.LoginRequest;
+import com.ithelpdesk.backend.dto.LoginResponse;
+import com.ithelpdesk.backend.dto.RegisterRequest;
+import com.ithelpdesk.backend.repository.DepartmentRepository;
+import com.ithelpdesk.backend.repository.RoleRepository;
+import com.ithelpdesk.backend.repository.UserRepository;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuthServiceImpl implements AuthService {
+
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final DepartmentRepository departmentRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    public AuthServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           DepartmentRepository departmentRepository,
+                           PasswordEncoder passwordEncoder,
+                           AuthenticationManager authenticationManager,
+                           JwtUtil jwtUtil) {
+
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.departmentRepository = departmentRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
+
+    @Override
+    public String register(RegisterRequest request) {
+
+        // TODO: Implement Registration Logic
+        return "User Registered Successfully";
+    }
+
+    @Override
+    public LoginResponse login(LoginRequest request) {
+
+        // TODO: Implement Login Logic
+        return new LoginResponse();
+    }
+
+    @Override
+    public String forgotPassword(ForgotPasswordRequest request) {
+
+        // TODO: Implement Forgot Password Logic
+        return "Password Reset Link Sent";
+    }
+
+    @Override
+    public String changePassword(ChangePasswordRequest request, String email) {
+
+        // TODO: Implement Change Password Logic
+        return "Password Changed Successfully";
+    }
+}

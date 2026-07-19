@@ -1,0 +1,5 @@
+package com.ithelpdesk.backend.dto;
+
+public class UpdateProfileRequest {
+
+}

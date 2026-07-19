@@ -1,0 +1,5 @@
+package com.ithelpdesk.backend.enums;
+
+public enum TicketCategory {
+
+}

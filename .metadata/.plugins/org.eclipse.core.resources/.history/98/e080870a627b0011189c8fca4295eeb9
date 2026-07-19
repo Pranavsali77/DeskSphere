@@ -1,0 +1,100 @@
+package com.ithelpdesk.backend.service;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.ithelpdesk.backend.dto.CreateTicketRequest;
+import com.ithelpdesk.backend.dto.TicketResponse;
+import com.ithelpdesk.backend.dto.UpdateTicketRequest;
+import com.ithelpdesk.backend.entity.Department;
+import com.ithelpdesk.backend.entity.Ticket;
+import com.ithelpdesk.backend.entity.User;
+import com.ithelpdesk.backend.enums.TicketStatus;
+import com.ithelpdesk.backend.repository.DepartmentRepository;
+import com.ithelpdesk.backend.repository.TicketRepository;
+import com.ithelpdesk.backend.repository.UserRepository;
+
+@Service
+@Transactional
+public class EmployeeTicketServiceImpl implements EmployeeTicketService {
+	   private final TicketRepository ticketRepository;
+	    private final UserRepository userRepository;
+	    private final DepartmentRepository departmentRepository;
+
+	    // ============================
+	    // Constructor
+	    // ============================
+
+	    public EmployeeTicketServiceImpl(
+	            TicketRepository ticketRepository,
+	            UserRepository userRepository,
+	            DepartmentRepository departmentRepository) {
+
+	        this.ticketRepository = ticketRepository;
+	        this.userRepository = userRepository;
+	        this.departmentRepository = departmentRepository;
+	    }
+
+	    //  generateTicketNumber() 
+
+	    private String generateTicketNumber() {
+
+	        return "TKT-" + UUID.randomUUID()
+	                .toString()
+	                .substring(0, 8)
+	                .toUpperCase();
+	    }
+
+	    //  mapToResponse() 
+
+	    private TicketResponse mapToResponse(Ticket ticket) {
+
+	        TicketResponse response = new TicketResponse();
+
+	        // Mapping code...
+
+	        return response;
+	    }
+
+    @Override
+    public TicketResponse createTicket(CreateTicketRequest request,
+                                       String employeeEmail) {
+
+        // Your create ticket logic
+
+        return null;
+    }
+
+    @Override
+    public List<TicketResponse> getMyTickets(String employeeEmail) {
+
+        return null;
+    }
+
+    @Override
+    public TicketResponse getTicketById(Long ticketId,
+                                        String employeeEmail) {
+
+        return null;
+    }
+
+    @Override
+    public TicketResponse updateTicket(Long ticketId,
+                                       UpdateTicketRequest request,
+                                       String employeeEmail) {
+
+        return null;
+    }
+
+    @Override
+    public String deleteTicket(Long ticketId,
+                               String employeeEmail) {
+
+        return null;
+    }
+
+}

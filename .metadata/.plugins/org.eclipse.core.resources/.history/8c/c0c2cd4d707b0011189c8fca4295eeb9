@@ -1,0 +1,29 @@
+package com.ithelpdesk.backend.service;
+
+import org.springframework.stereotype.Service;
+
+import com.ithelpdesk.backend.dto.DashboardResponse;
+import com.ithelpdesk.backend.repository.TicketRepository;
+import com.ithelpdesk.backend.repository.UserRepository;
+
+@Service
+public class EmployeeDashboardServiceImpl implements EmployeeDashboardService {
+
+    private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
+
+    public EmployeeDashboardServiceImpl(
+            TicketRepository ticketRepository,
+            UserRepository userRepository) {
+
+        this.ticketRepository = ticketRepository;
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public DashboardResponse getDashboard(String employeeEmail) {
+
+        return null;
+    }
+
+}
