@@ -1,5 +1,6 @@
 package com.ithelpdesk.backend.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -7,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ithelpdesk.backend.dto.CloseTicketRequest;
 import com.ithelpdesk.backend.dto.CreateTicketRequest;
 import com.ithelpdesk.backend.dto.TicketResponse;
 import com.ithelpdesk.backend.dto.UpdateTicketRequest;
@@ -221,5 +223,33 @@ public class EmployeeTicketServiceImpl implements EmployeeTicketService {
 
         return "Ticket deleted successfully.";
     }
+
+
+	@Override
+	public TicketResponse closeTicket(Long ticketId,
+                                  CloseTicketRequest request,
+                                  String employeeEmail) {
+
+    User employee = userRepository.findByEmail(employeeEmail)
+            .orElseThrow(() ->
+                    new RuntimeException("Employee not found"));
+
+    Ticket ticket = ticketRepository
+            .findByIdAndEmployee(ticketId, employee)
+            .orElseThrow(() ->
+                    new RuntimeException("Ticket not found"));
+
+    if (ticket.getStatus() == TicketStatus.CLOSED) {
+        throw new RuntimeException("Ticket is already closed.");
+    }
+
+    ticket.setStatus(TicketStatus.CLOSED);
+    ticket.setResolution(request.getResolution());
+    ticket.setResolvedAt(LocalDateTime.now());
+
+    Ticket updatedTicket = ticketRepository.save(ticket);
+
+    return mapToResponse(updatedTicket);
+	}
 
 }

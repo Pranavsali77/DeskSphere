@@ -2,9 +2,12 @@ package com.ithelpdesk.backend.service;
 
 import java.util.List;
 
+import com.ithelpdesk.backend.dto.CloseTicketRequest;
 import com.ithelpdesk.backend.dto.CreateTicketRequest;
 import com.ithelpdesk.backend.dto.TicketResponse;
 import com.ithelpdesk.backend.dto.UpdateTicketRequest;
+
+
 
 public interface EmployeeTicketService {
 
@@ -24,5 +27,9 @@ public interface EmployeeTicketService {
 
     // Delete Ticket
     String deleteTicket(Long ticketId, String employeeEmail);
+
+    TicketResponse closeTicket(Long ticketId,
+                           CloseTicketRequest request,
+                           String employeeEmail);
 
 }

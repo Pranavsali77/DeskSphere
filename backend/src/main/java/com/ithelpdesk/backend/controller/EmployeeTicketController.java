@@ -1,5 +1,6 @@
 package com.ithelpdesk.backend.controller;
 
+import com.ithelpdesk.backend.dto.CloseTicketRequest;
 import com.ithelpdesk.backend.dto.CreateTicketRequest;
 import com.ithelpdesk.backend.dto.TicketResponse;
 import com.ithelpdesk.backend.dto.UpdateTicketRequest;
@@ -65,5 +66,16 @@ public class EmployeeTicketController {
                 employeeTicketService.deleteTicket(ticketId, email)
         );
     }
+
+    @PutMapping("/tickets/{ticketId}/close")
+    public ResponseEntity<TicketResponse> closeTicket(
+        @PathVariable Long ticketId,
+        @Valid @RequestBody CloseTicketRequest request,
+        @RequestParam String email) {
+
+         return ResponseEntity.ok(
+            employeeTicketService.closeTicket(ticketId, request, email)
+         );
+       }
 
 }
