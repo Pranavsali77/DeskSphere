@@ -78,4 +78,13 @@ public class EmployeeTicketController {
          );
        }
 
+       @PutMapping("/tickets/{ticketId}/reopen")
+        public ResponseEntity<TicketResponse> reopenTicket(
+                @PathVariable Long ticketId,
+                @RequestParam String email) {
+
+         return ResponseEntity.ok(
+            employeeTicketService.reopenTicket(ticketId, email)
+        );
+        }
 }

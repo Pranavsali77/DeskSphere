@@ -252,4 +252,30 @@ public class EmployeeTicketServiceImpl implements EmployeeTicketService {
     return mapToResponse(updatedTicket);
 	}
 
+	@Override
+public TicketResponse reopenTicket(Long ticketId,
+                                   String employeeEmail) {
+
+    User employee = userRepository.findByEmail(employeeEmail)
+            .orElseThrow(() ->
+                    new RuntimeException("Employee not found"));
+
+    Ticket ticket = ticketRepository
+            .findByIdAndEmployee(ticketId, employee)
+            .orElseThrow(() ->
+                    new RuntimeException("Ticket not found"));
+
+    if (ticket.getStatus() != TicketStatus.CLOSED) {
+        throw new RuntimeException("Only CLOSED tickets can be reopened.");
+    }
+
+    ticket.setStatus(TicketStatus.OPEN);
+    ticket.setResolution(null);
+    ticket.setResolvedAt(null);
+
+    Ticket updated = ticketRepository.save(ticket);
+
+    return mapToResponse(updated);
+}
+
 }

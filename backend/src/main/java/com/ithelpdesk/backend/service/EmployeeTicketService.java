@@ -32,4 +32,6 @@ public interface EmployeeTicketService {
                            CloseTicketRequest request,
                            String employeeEmail);
 
+    TicketResponse reopenTicket(Long ticketId, String employeeEmail);                       
+
 }
