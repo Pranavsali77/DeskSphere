@@ -27,19 +27,23 @@ public class EmployeeTicketServiceImpl implements EmployeeTicketService {
 	    private final UserRepository userRepository;
 	    private final DepartmentRepository departmentRepository;
 
+		private final TicketActivityService ticketActivityService;
+
 	    // ============================
 	    // Constructor
 	    // ============================
 
-	    public EmployeeTicketServiceImpl(
-	            TicketRepository ticketRepository,
-	            UserRepository userRepository,
-	            DepartmentRepository departmentRepository) {
+	   public EmployeeTicketServiceImpl(
+        TicketRepository ticketRepository,
+        UserRepository userRepository,
+        DepartmentRepository departmentRepository,
+        TicketActivityService ticketActivityService) {
 
-	        this.ticketRepository = ticketRepository;
-	        this.userRepository = userRepository;
-	        this.departmentRepository = departmentRepository;
-	    }
+    this.ticketRepository = ticketRepository;
+    this.userRepository = userRepository;
+    this.departmentRepository = departmentRepository;
+    this.ticketActivityService = ticketActivityService;
+}
 
 	    //  generateTicketNumber() 
 
@@ -117,9 +121,17 @@ public class EmployeeTicketServiceImpl implements EmployeeTicketService {
 
 	        ticket.setStatus(TicketStatus.OPEN);
 
-	        Ticket savedTicket = ticketRepository.save(ticket);
+			Ticket savedTicket = ticketRepository.save(ticket);
 
-	        return mapToResponse(savedTicket);
+	ticketActivityService.logActivity(
+        savedTicket,
+        "TICKET_CREATED",
+        "Ticket created successfully",
+        employee.getEmail()
+	);
+
+	return mapToResponse(savedTicket);		
+
 	    }
 
 	    @Override
@@ -195,7 +207,15 @@ public class EmployeeTicketServiceImpl implements EmployeeTicketService {
         // Save
         Ticket updatedTicket = ticketRepository.save(ticket);
 
-        return mapToResponse(updatedTicket);
+	ticketActivityService.logActivity(
+        updatedTicket,
+        "TICKET_UPDATED",
+        "Ticket updated successfully",
+        employee.getEmail()
+	);
+
+	return mapToResponse(updatedTicket);
+
     }
 
     @Override
@@ -247,9 +267,16 @@ public class EmployeeTicketServiceImpl implements EmployeeTicketService {
     ticket.setResolution(request.getResolution());
     ticket.setResolvedAt(LocalDateTime.now());
 
-    Ticket updatedTicket = ticketRepository.save(ticket);
+   Ticket updatedTicket = ticketRepository.save(ticket);
 
-    return mapToResponse(updatedTicket);
+	ticketActivityService.logActivity(
+        updatedTicket,
+        "TICKET_CLOSED",
+        "Ticket closed by employee",
+        employee.getEmail()
+	);
+
+	return mapToResponse(updatedTicket);
 	}
 
 	@Override
@@ -275,7 +302,15 @@ public TicketResponse reopenTicket(Long ticketId,
 
     Ticket updated = ticketRepository.save(ticket);
 
-    return mapToResponse(updated);
+	ticketActivityService.logActivity(
+        updated,
+        "TICKET_REOPENED",
+        "Ticket reopened by employee",
+        employee.getEmail()
+	);
+
+	return mapToResponse(updated);
+
 }
 
 }
