@@ -10,7 +10,11 @@ import com.ithelpdesk.backend.dto.AttachmentUploadResponse;
 
 public interface AttachmentService {
 
-    AttachmentUploadResponse uploadAttachment(Long ticketId, MultipartFile file) throws IOException;
+    AttachmentUploadResponse uploadAttachment(
+        Long ticketId,
+        MultipartFile file,
+        String employeeEmail)
+        throws IOException;
 
     List<AttachmentResponse> getAttachmentsByTicket(Long ticketId);
 

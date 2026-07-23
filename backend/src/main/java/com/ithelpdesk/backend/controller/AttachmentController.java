@@ -26,12 +26,16 @@ public class AttachmentController {
 
     @PostMapping("/upload/{ticketId}")
     public ResponseEntity<AttachmentUploadResponse> uploadAttachment(
-            @PathVariable Long ticketId,
-            @RequestParam("file") MultipartFile file)
-            throws IOException {
+        @PathVariable Long ticketId,
+        @RequestParam("file") MultipartFile file,
+        @RequestParam String email)
+        throws IOException {
 
         return ResponseEntity.ok(
-                attachmentService.uploadAttachment(ticketId, file));
+            attachmentService.uploadAttachment(
+                    ticketId,
+                    file,
+                    email));
     }
 
     @GetMapping("/ticket/{ticketId}")
