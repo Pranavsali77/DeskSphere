@@ -1,0 +1,31 @@
+title,description,category
+Laptop not starting,Power button is not working,HARDWARE
+Laptop overheating,System becomes very hot after 10 minutes,HARDWARE
+Blue screen error,System crashes frequently,HARDWARE
+Keyboard not working,Some keys are not responding,HARDWARE
+Mouse stopped working,USB mouse is not detected,HARDWARE
+Monitor has no display,Screen remains black,HARDWARE
+Software installation failed,Unable to install Microsoft Office,SOFTWARE
+Application crashing,ERP software closes automatically,SOFTWARE
+Excel not opening,Microsoft Excel crashes on startup,SOFTWARE
+Windows update failed,Operating system update failed,SOFTWARE
+VPN not connecting,Unable to connect to office VPN,VPN
+VPN disconnects frequently,VPN connection drops every few minutes,VPN
+Unable to access office network,Network connection unavailable,NETWORK
+WiFi not working,Laptop cannot connect to WiFi,NETWORK
+Internet is very slow,Network speed is extremely slow,NETWORK
+LAN cable disconnected,No Ethernet connection detected,NETWORK
+Printer not printing,Printer remains offline,PRINTER
+Paper jam in printer,Printer shows paper jam error,PRINTER
+Printer printing blank pages,Printed pages are empty,PRINTER
+Email not sending,Outlook cannot send emails,EMAIL
+Email not receiving,Inbox is not receiving messages,EMAIL
+Mailbox full,Unable to receive new emails,EMAIL
+Cloud storage unavailable,Cannot access cloud drive,CLOUD
+Cloud server timeout,Cloud application is not responding,CLOUD
+Virtual machine stopped,Cloud VM is not starting,CLOUD
+Unauthorized login detected,Suspicious login activity,SECURITY
+Antivirus expired,System antivirus license expired,SECURITY
+Malware detected,Computer infected with malware,SECURITY
+Password reset required,User forgot account password,SECURITY
+Firewall blocked access,Application blocked by firewall,SECURITY

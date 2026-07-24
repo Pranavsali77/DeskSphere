@@ -1,11 +1,10 @@
 from pydantic import BaseModel
 
+class TicketClassificationRequest(BaseModel):
+    title: str
+    description: str
 
-class ChatRequest(BaseModel):
 
-    message: str
-
-
-class ChatResponse(BaseModel):
-
-    response: str
+class TicketClassificationResponse(BaseModel):
+    predictedCategory: str
+    confidence: float
